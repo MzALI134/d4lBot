@@ -1,0 +1,21 @@
+name: SSH deploy Main
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy Main
+      runs-on: ubuntu-latest
+    steps:
+      - name: executing remote commands
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: e45g 
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 8022
+          script: |
+            cd /home/e45g/Projects/d4l_bot
+            git pull
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S systemctl restart --now d4l_bot
